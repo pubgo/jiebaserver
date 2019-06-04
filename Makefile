@@ -15,19 +15,10 @@ _ImageVersionName = $(_ImagesPrefix)$(_ImageName):$(_Version)
 
 _version:
 
-ifeq ($(_Version), $(shell cat version/version | head -n 1))
-		@git tag | tee
-		exit "项目版本没有变动"
-endif
-
 	@echo "package version" > $(_VersionFile)
 	@echo "const Version = "\"$(_Version)\" >> $(_VersionFile)
-	@echo "const BuildVersion = "\"$(_BuildVersion)\" >> $(_VersionFile)
-	@echo "const CommitVersion = "\"$(_CommitVersion)\" >> $(_VersionFile)
-
-	@echo	"## Version: $(_Version)" >> $(_VersionCheckFile)
-	@echo	"	1. BuildVersion: $(_BuildVersion)" >> $(_VersionCheckFile)
-	@echo	"	2. CommitVersion: $(_CommitVersion)" >> $(_VersionCheckFile)
+	@echo "const BuildV = "\"$(_BuildVersion)\" >> $(_VersionFile)
+	@echo "const CommitV = "\"$(_CommitVersion)\" >> $(_VersionFile)
 
 _build_linux: _version
 	@echo "交叉编译linux"

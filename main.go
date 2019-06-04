@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/yanyiwu/gojieba"
+	"log"
 	"net/http"
 	"os"
 	"path"
@@ -12,9 +13,11 @@ import (
 )
 
 func main() {
+	debug := os.Getenv("debug") == "true"
+
 	cur, err := os.Getwd()
 	if err != nil {
-		panic(err.Error())
+		log.Fatalln("get wd error")
 	}
 
 	DICT_DIR := path.Join(cur, "dict")
@@ -123,7 +126,13 @@ func main() {
 		})
 	})
 
+	if debug {
+		gin.SetMode(gin.DebugMode)
+	} else {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
 	if err := r.Run(":8080"); err != nil {
-		panic(err.Error())
+		log.Fatalln(err.Error(), "app run error")
 	}
 }
